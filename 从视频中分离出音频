@@ -9,11 +9,58 @@
 
 from moviepy.editor  import AudioFileClip
 my_audio_clip  = AudioFileClip("/Users/admin/Documents/xxx/LivebandGodOfGambleOpeningMusic.mp4")
-my_audio_clip.write_audiofile("/Users/admin/Documents/xxx/LivebandGodOfGambleOpeningMusic.wav") 
-
+my_audio_clip.write_audiofile("/Users/admin/Documents/xxx/LivebandGodOfGambleOpeningMusic.wav") // 文件太大 
+my_audio_clip.write_audiofile("/Users/admin/Documents/xxx/LivebandGodOfGambleOpeningMusic.mp3") // 文件刚好
 
 ```
 3.音频文件太大压缩
+
+```
+// 方法一:压缩之后失真
+// https://colab.research.google.com/#scrollTo=GJBs_flRovLc
+
+// 新建文件夹和
+
+// 显示
+_SAMPLE_DIR = "_assets"
+SAMPLE_WAV_PATH = "_assets/ab.wav"
+SAMPLE_FLAC_PATH = "_assets/new_file.flac"
+SAMPLE_WAV_PATH2 = "_assets/new_file2.wav"
+from IPython.display import Audio, display
+display(Audio(SAMPLE_WAV_PATH2))
+
+// 格式转换
+import soundfile as sf
+
+data, samplerate = sf.read(SAMPLE_WAV_PATH)
+print(data.shape,samplerate)
+sf.write("_assets/new_file.flac",data,samplerate) # ok
+
+// 压缩
+import wave
+obj = wave.open(SAMPLE_WAV_PATH,'r')
+
+print("Number of channels=",obj.getnchannels())
+print("Sample width=",obj.getsampwidth())
+print("Frame rate=",obj.getframerate())
+print("Number of frames=",obj.getnframes())
+print("parameters=",obj.getparams())
+frame = obj.readframes(obj.getnframes())
+obj.close()
+
+sample_rate = 16000.0
+obj = wave.open('_assets/new_file2.wav','w')
+obj.setnchannels(1)
+obj.setsampwidth(2)
+obj.setframerate(sample_rate)
+obj.writeframes(frame)
+obj.close()
+
+
+
+// 方法二:压缩之后减少
+https://www.compresss.com/cn/compress-audio.html //
+```
 
 4.音频文件裁剪
 
